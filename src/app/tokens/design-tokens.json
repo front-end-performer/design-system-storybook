@@ -1,0 +1,15 @@
+{
+  "colors": {
+    "primary": "#005f73",
+    "secondary": "#0a9396",
+    "accent": "#94d2bd",
+    "background": "#e9d8a6",
+    "textPrimary": "#001219"
+  },
+  "spacing": {
+    "sm": "8px",
+    "md": "12px",
+    "lg": "16px",
+    "xl": "24px"
+  }
+}
