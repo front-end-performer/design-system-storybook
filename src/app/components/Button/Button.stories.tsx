@@ -1,63 +1,53 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { fn } from "@storybook/test";
-import { ComponentProps } from "react";
+import { Button } from "@/app/components"; // Adjust the import path accordingly
 
-import { Button } from "@/app/components";
-
-type StoryProps = ComponentProps<typeof Button> & {
-  buttonText: string;
-};
-
-const meta: Meta<StoryProps> = {
+const meta: Meta<typeof Button> = {
   title: "Components/Button",
   component: Button,
   tags: ["autodocs"],
-  parameters: {
-    docs: {
-      subtitle: "Displays an button description here",
-    },
-  },
-  argTypes: {
-    variant: {
-      options: ["primary", "secondary"],
-      control: {
-        type: "select",
-      },
-    },
-    size: {
-      options: ["sm", "md", "lg"],
-      control: {
-        type: "select",
-      },
-    },
-  },
   args: {
     onClick: fn(),
+  },
+  argTypes: {
+    variant: {control: false},
+    size: {
+      options: ["sm", "md", "lg"], // Options for the select dropdown
+      control: {
+        type: "select", // This makes the size prop controlled by a select dropdown
+      },
+    },
   },
 };
 
 export default meta;
 
-type Story = StoryObj<StoryProps>;
+const Template: StoryFn<typeof Button> = (args) => <Button {...args} />;
 
-export const Primary: Story = {
-  args: {
-    buttonText: "Hello",
-    variant: "primary",
-    size: "md",
-  },
-  render: ({ buttonText, ...args }) => {
-    return <Button {...args}>{buttonText}</Button>;
-  },
+export const Primary = Template.bind({});
+Primary.args = {
+  variant: "primary",
+  size: "md", // Default size is medium
+  children: "Primary Button",
 };
 
-export const Secondary: Story = {
-  args: {
-    buttonText: "Hello",
-    variant: "secondary",
-    size: "md",
-  },
-  render: ({ buttonText, ...args }) => {
-    return <Button {...args}>{buttonText}</Button>;
-  },
+export const Secondary = Template.bind({});
+Secondary.args = {
+  variant: "secondary",
+  size: "md", // Default size is medium
+  children: "Secondary Button",
+};
+
+export const Small = Template.bind({});
+Small.args = {
+  variant: "primary",
+  size: "sm", // Small button
+  children: "Small Button",
+};
+
+export const Large = Template.bind({});
+Large.args = {
+  variant: "primary",
+  size: "lg", // Large button
+  children: "Large Button",
 };

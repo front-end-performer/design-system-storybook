@@ -1,30 +1,48 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { TokenPresenter } from "@/app/components";
 import type { TokenValue } from "../Tokens/type";
 
-export type DataProps = {
-  data: TokenValue;
+type DefaultType = PropsWithChildren<{
+  tokens: TokenValue[];
   category: string;
-};
+}>;
 
-export const Table = ({ data, category }: DataProps) => {
+export const Table: React.FC<DefaultType> = ({ tokens, category }) => {
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full bg-white border border-gray-300">
-        <thead>
+    <div className="overflow-x-auto shadow-md sm:rounded-lg">
+      <table
+        className="min-w-full bg-white border border-gray-200"
+        style={{ margin: 0 }}
+      >
+        <thead className="bg-blue-600 text-white">
           <tr className="bg-neutral-300 text-white">
-            <th className="p-3 text-left">Name</th>
-            <th className="p-3 text-left">Value</th>
-            <th className="p-3 text-left">Preview</th>
+            <th className="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">
+              Name
+            </th>
+            <th className="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">
+              Value
+            </th>
+            <th className="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">
+              Preview
+            </th>
           </tr>
         </thead>
-        <tbody>
-          {Object.entries(data).map(([name, value]) => (
-            <tr key={name} className="odd:bg-gray-100 even:bg-gray-50">
-              <td className="p-3 border-t border-gray-300">{name}</td>
-              <td className="p-3 border-t border-gray-300">{value}</td>
-              <td className="p-3 border-t border-gray-300">
-                <TokenPresenter token={value} category={category} />
+        <tbody className="text-gray-700">
+          {tokens.map((token, index: number) => (
+            <tr
+              key={token.name}
+              className={`${
+                index % 2 === 0 ? "bg-gray-50" : "bg-white"
+              } hover:bg-gray-100`}
+            >
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                {token.name}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                {token.value}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                <TokenPresenter token={token.value} category={category} />
               </td>
             </tr>
           ))}
@@ -33,3 +51,5 @@ export const Table = ({ data, category }: DataProps) => {
     </div>
   );
 };
+
+export default Table;

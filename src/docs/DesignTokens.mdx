@@ -1,4 +1,5 @@
-import { ColorTokens, SpacingTokens } from "@/app/components";
+import desingTokens from "@/app/tokens/design-tokens.json";
+import { TokensTable } from "@/app/components";
 
 # Storybook Design Tokens
 
@@ -6,5 +7,8 @@ Display design token documentation generated from stylesheets or json file. Prev
 
 ## Colors (Table)
 
-<ColorTokens />
-<SpacingTokens />
+<TokensTable tokens={desingTokens} category="colors" />
+
+## Spacing (Table)
+
+<TokensTable tokens={desingTokens} category="spacing" />

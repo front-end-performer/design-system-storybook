@@ -1,5 +1,6 @@
 export interface TokenValue {
-  [key: string]: string;
+  name: string;
+  value: string;
 }
 export interface DesignTokens {
   colors: {
@@ -17,33 +18,24 @@ export interface DesignTokens {
   };
 }
 
-export enum TokenPresenter {
-  ANIMATION = "Animation",
-  BORDER = "Border",
-  BORDER_RADIUS = "BorderRadius",
-  COLOR = "Color",
-  EASING = "Easing",
-  FONT_FAMILY = "FontFamily",
-  FONT_SIZE = "FontSize",
-  FONT_WEIGHT = "FontWeight",
-  GRADIENT = "Gradient",
-  LINE_HEIGHT = "LineHeight",
-  LETTER_SPACING = "LetterSpacing",
-  OPACITY = "Opacity",
-  SHADOW = "Shadow",
-  SPACING = "Spacing",
-  SVG = "Svg",
-  IMAGE = "Image",
-}
+export type ColorProps = {
+  colors: {
+    primary: string;
+    secondary: string;
+    accent: string;
+    background: string;
+    textPrimary: string;
+  };
+};
 
-export enum TokenSourceType {
-  CSS = "CSS",
-  LESS = "Less",
-  SCSS = "SCSS",
-  SVG = "SVG",
-  THEO = "THEO",
-  IMAGE = "IMAGE",
-}
+export type SpacingProps = {
+  spacing: {
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+  };
+};
 
 export interface PresenterProps {
   token: string;

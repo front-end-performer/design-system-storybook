@@ -1,4 +1,4 @@
-import { CSSProperties, PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 
 type ButtonProps = PropsWithChildren<{
   onClick?: () => void;
@@ -14,40 +14,23 @@ export const Button = ({
   size = "md",
   className,
 }: ButtonProps) => {
-  const variantStyles: Record<ButtonProps["variant"], CSSProperties> = {
-    primary: {
-      backgroundColor: "blue",
-    },
-    secondary: {
-      backgroundColor: "gray",
-    },
+  // Define the variant classes
+  const variantClasses = {
+    primary: "bg-blue-500 hover:bg-blue-600",
+    secondary: "bg-gray-500 hover:bg-gray-600",
   };
 
-  const sizeStyles: Record<ButtonProps["size"], CSSProperties> = {
-    sm: {
-      padding: "0.5rem",
-    },
-    md: {
-      padding: "0.75rem",
-    },
-    lg: {
-      padding: "1rem",
-    },
+  // Define the size classes
+  const sizeClasses = {
+    sm: "px-3 py-1 text-sm",
+    md: "px-5 py-2 text-base",
+    lg: "px-7 py-3 text-lg",
   };
 
   return (
     <button
-      style={{
-        outline: "none",
-        border: "none",
-        cursor: "pointer",
-        color: "white",
-        borderRadius: 10,
-        ...variantStyles[variant],
-        ...sizeStyles[size],
-      }}
       onClick={onClick}
-      className={className}
+      className={`${variantClasses[variant]} ${sizeClasses[size]} text-white rounded-md focus:outline-none ${className}`}
     >
       {children}
     </button>
