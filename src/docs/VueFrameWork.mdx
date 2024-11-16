@@ -1,0 +1,41 @@
+import { Meta } from "@storybook/addon-docs";
+
+<Meta title="FrameWorks/Vue Integration" />
+
+# Vue Integration
+
+Ipsum voluptate reprehenderit ut aliquid laborum enim. Optio et suscipit aliquam voluptate nostrum est. Corrupti ab laboriosam qui aut aliquid iusto nobis voluptatum. Perferendis non reiciendis illum. Vel et sint est.
+
+## **Via NPM**
+
+Ipsum voluptate reprehenderit ut aliquid laborum enim. Optio et suscipit aliquam voluptate nostrum est. Corrupti ab laboriosam qui aut aliquid iusto nobis voluptatum. Perferendis non reiciendis illum. Vel et sint est.
+
+```
+npm i @fiege/input-component
+```
+
+## **Data Binding**
+
+Ipsum voluptate reprehenderit ut aliquid laborum enim. Optio et suscipit aliquam voluptate nostrum est. Corrupti ab laboriosam qui aut aliquid iusto nobis voluptatum. Perferendis non reiciendis illum. Vel et sint est.
+
+
+```ts
+<template>
+  <fiege-input :modelValue="firstName" @fiegeinput="firstName = $event.target.value"></fiege-input>
+    {{firstName}}
+</template>
+
+<script lang="ts">
+import { defineComponent, ref } from "vue";
+
+export default defineComponent({
+  setup() {
+    const firstName = ref('')
+
+    return {
+      firstName
+    };
+  }
+});
+</script>
+```
