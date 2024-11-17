@@ -1,0 +1,172 @@
+import { Meta } from "@storybook/addon-docs";
+
+<Meta title="Frameworks/Angular Integration" />
+
+# Angular Integration
+
+Design System built with React.js.
+
+## **Via NPM**
+
+Each package can then be published independently to a package registry (e.g., npm), allowing teams to install only the components relevant to their framework.
+
+```
+npm i @angular-fiege/input-component
+```
+
+## **Example of a Button component integration**
+
+### Create Button component
+
+// Button.jsx (React)
+
+```js
+import React from "react";
+import PropTypes from "prop-types";
+import "./Button.css";
+
+const Button = ({ label, onClick, color = "blue", size = "medium" }) => {
+  return (
+    <button className={`button ${color} ${size}`} onClick={onClick}>
+      {label}
+    </button>
+  );
+};
+
+Button.propTypes = {
+  label: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
+  color: PropTypes.oneOf(["blue", "red", "green"]),
+  size: PropTypes.oneOf(["small", "medium", "large"]),
+};
+
+export default Button;
+```
+
+### Create Button Story
+
+// Button.stories.js
+
+```js
+import React from "react";
+import Button from "../src/Button";
+
+export default {
+  title: "Design System/Button",
+  component: Button,
+  argTypes: {
+    onClick: { action: "clicked" },
+    label: { control: "text" },
+    color: { control: "select", options: ["blue", "red", "green"] },
+    size: { control: "select", options: ["small", "medium", "large"] },
+  },
+};
+
+const Template = (args) => <Button {...args} />;
+
+export const Default = Template.bind({});
+Default.args = {
+  label: "Click Me",
+};
+
+export const RedButton = Template.bind({});
+RedButton.args = {
+  label: "Danger",
+  color: "red",
+};
+
+export const LargeButton = Template.bind({});
+LargeButton.args = {
+  label: "Big Button",
+  size: "large",
+};
+```
+
+### Bundle the React Button Component Using Webpack
+
+// webpack.config.js
+
+```js
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+
+module.exports = {
+  entry: "./src/index.js",
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.js",
+  },
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: ["babel-loader"],
+      },
+    ],
+  },
+  resolve: {
+    extensions: [".js", ".jsx"],
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./public/index.html",
+    }),
+  ],
+};
+```
+
+```js
+{
+  "presets": ["@babel/preset-env", "@babel/preset-react"]
+}
+
+```
+
+or expose React as a Custom Element: You can wrap the React Button in a Custom Element (Web Component), which is easier to integrate into Angular.
+
+```js
+// ReactButtonWrapper.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Button from './Button';
+
+class ReactButtonWrapper extends HTMLElement {
+  connectedCallback() {
+    const { label, onClick, variant } = this.dataset;
+    ReactDOM.render(
+      <Button label={label} onClick={onClick} variant={variant} />,
+      this
+    );
+  }
+}
+
+customElements.define('react-button', ReactButtonWrapper);
+```
+
+
+### Use the React Button Component in Angular Template
+
+// app.component.html
+
+```js
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  template: `<react-button label="Click Me" [variant]="'primary'" (click)="handleClick()"></react-button>`,
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent implements OnInit {
+  handleClick() {
+    console.log('Button clicked');
+  }
+
+  ngOnInit() {
+    // Load the React custom element script
+    const script = document.createElement('script');
+    script.src = 'path/to/react-button-wrapper.js';
+    document.head.appendChild(script);
+  }
+}
+```

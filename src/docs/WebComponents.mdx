@@ -1,0 +1,178 @@
+import { Meta } from "@storybook/addon-docs";
+
+<Meta title="Web Components" />
+
+# Design System built with Web Components
+
+### Create a Button
+
+```js
+class MyButton extends HTMLElement {
+  constructor() {
+    super();
+    const shadow = this.attachShadow({ mode: "open" });
+    shadow.innerHTML = `
+      <style>
+        button {
+          padding: 10px 20px;
+          font-size: 16px;
+          background-color: #007bff;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+        button:hover {
+          background-color: #0056b3;
+        }
+      </style>
+      <button id="button"><slot>Click Me</slot></button>
+    `;
+
+    this.button = shadow.querySelector("#button");
+    this.button.addEventListener("click", () => {
+      this.dispatchEvent(
+        new CustomEvent("button-click", { bubbles: true, composed: true })
+      );
+    });
+  }
+
+  static get observedAttributes() {
+    return ["label"];
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === "label") {
+      this.button.textContent = newValue;
+    }
+  }
+}
+
+customElements.define("my-button", MyButton);
+```
+
+### Register the Web Component Globally in Storybook
+
+// .storybook/preview.js
+
+```js
+import "../src/MyButton.js";
+```
+
+### Create a Button Story
+
+```js
+export default {
+  title: "Components/MyButton",
+  argTypes: {
+    label: { control: "text", defaultValue: "Press Me" },
+    onButtonClick: { action: "button-click" },
+  },
+};
+
+const Template = (args) => ({
+  template: `<my-button :label="args.label" @button-click="args.onButtonClick" />`,
+  setup() {
+    return { args };
+  },
+});
+
+export const Default = Template.bind({});
+Default.args = {
+  label: "Press Me",
+};
+```
+
+## Example of Button usage with **Vue Framework**
+
+```js
+<template>
+  <div>
+    <h2>Web Component Button in Vue</h2>
+    <my-button :label="buttonLabel" @button-click="handleButtonClick"></my-button>
+  </div>
+</template>
+
+<script>
+import './MyButton.js';  // Import the Web Component (could be independently installed from npm)
+
+export default {
+  name: 'MyVueComponent',
+  data() {
+    return {
+      buttonLabel: 'Press Me',
+    };
+  },
+  methods: {
+    handleButtonClick() {
+      alert('Button clicked!');
+    },
+  },
+};
+</script>
+```
+
+## Example of Button usage with **React Framework**
+
+```js
+import React, { useEffect } from 'react';
+
+// Import the Web Component (ensure it’s included in the build)
+import './ButtonComponent';
+
+const App = () => {
+  useEffect(() => {
+    // Example: Attach an event listener to the custom button (if needed)
+    const buttonElement = document.querySelector('button-component');
+    buttonElement.addEventListener('click', () => alert('Button clicked!'));
+
+    return () => {
+      // Cleanup on unmount
+      buttonElement.removeEventListener('click', () => alert('Button clicked!'));
+    };
+  }, []);
+
+  return (
+    <div>
+      <h1>Web Component in React</h1>
+      <button-component></button-component> {/* Using the custom Web Component */}
+    </div>
+  );
+};
+
+export default App;
+```
+
+## Example of Button usage with **Angular Framework**
+
+// Install
+
+```js
+npm install @angular/elements
+```
+
+#### Update Angular Module
+
+```js
+import { NgModule, Injector } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppComponent } from './app.component';
+import { createCustomElement } from '@angular/elements';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [BrowserModule],
+  providers: [],
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]  // Allow the use of Web Components
+})
+export class AppModule {
+  constructor(private injector: Injector) {
+    const buttonElement = createCustomElement(ButtonComponent, { injector });
+    customElements.define('my-button', buttonElement); // Register Web Component
+  }
+
+  ngDoBootstrap() {}
+}
+```
+
