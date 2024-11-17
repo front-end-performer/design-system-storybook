@@ -1,3 +1,4 @@
+import { DesignTokenDocBlock } from 'storybook-design-token';
 import desingTokens from "@/app/tokens/design-tokens.json";
 import { TokensTable } from "@/app/components";
 
@@ -6,6 +7,9 @@ import { TokensTable } from "@/app/components";
 Display design token documentation generated from stylesheets or json file. Preview design token changes in the browser.
 
 ## Colors (Table)
+
+<DesignTokenDocBlock categoryName="Colors" maxHeight={600} viewType="card" />
+<DesignTokenDocBlock categoryName="Spacings" maxHeight={600} viewType="card" />
 
 <TokensTable tokens={desingTokens} category="colors" />
 
